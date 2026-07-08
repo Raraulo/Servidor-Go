@@ -98,7 +98,7 @@ func main() {
 
 	// Configuración CORS para Angular
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:4200"},
+		AllowedOrigins:   []string{"http://localhost:4200", "https://cliente-angular-s3ov.vercel.app"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Authorization", "Content-Type", "Token"},
 		AllowCredentials: true,
