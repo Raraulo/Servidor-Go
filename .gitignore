@@ -1,0 +1,8 @@
+/srvr.exe
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+/vendor/
+/.env

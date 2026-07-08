@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
@@ -102,6 +103,10 @@ func main() {
 		Debug:            true,
 	})
 
-	fmt.Println("🟢 Servidor iniciado en http://localhost:4000")
-	log.Fatal(http.ListenAndServe(":4000", c.Handler(middleware(router))))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "4000"
+	}
+	fmt.Println("🟢 Servidor iniciado en el puerto " + port)
+	log.Fatal(http.ListenAndServe(":"+port, c.Handler(middleware(router))))
 }
