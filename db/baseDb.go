@@ -52,7 +52,11 @@ func InitDB() {
 		fmt.Println("Conectando a producción (Render)...")
 	}
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	// AÑADE ESTO AQUÍ: Configuración de GORM con PrepareStmt: false
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		PrepareStmt: false,
+	})
+
 	if err != nil {
 		panic("Error al conectar a la base de datos: " + err.Error())
 	}
