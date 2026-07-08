@@ -52,8 +52,10 @@ func InitDB() {
 		fmt.Println("Conectando a producción (Render)...")
 	}
 
-	// AÑADE ESTO AQUÍ: Configuración de GORM con PrepareStmt: false
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		DSN:                  dsn,
+		PreferSimpleProtocol: true,
+	}), &gorm.Config{
 		PrepareStmt: false,
 	})
 
