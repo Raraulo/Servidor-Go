@@ -9,12 +9,11 @@ import (
 	"gorm.io/gorm"
 )
 
-var dsn = os.Getenv("DATABASE_URL")
-
+var BaseDeDatos *gorm.DB
 var conexionDb *sql.DB
 
-func crearBaseDeDatosLocalSiNoExiste() {
-	if dsn != "" {
+func crearBaseDeDatosLocalSiNoExiste(dsnProduccion string) {
+	if dsnProduccion != "" {
 		return // En producción (Render) la DB ya viene creada y configurada
 	}
 
@@ -41,18 +40,23 @@ func crearBaseDeDatosLocalSiNoExiste() {
 	}
 }
 
-// función anónima que se autoejecuta para conectarse a la BBDD
-var BaseDeDatos = func() (db *gorm.DB) {
-	crearBaseDeDatosLocalSiNoExiste()
+func InitDB() {
+	dsn := os.Getenv("DATABASE_URL")
+
+	crearBaseDeDatosLocalSiNoExiste(dsn)
 
 	if dsn == "" {
 		dsn = "host=127.0.0.1 user=postgres password=12345 dbname=srvr_go port=5432 sslmode=disable"
-	}
-	if db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{}); err != nil {
-		fmt.Println("Error al conectarse a la BBDD")
-		panic(err)
+		fmt.Println("Conectando a desarrollo local...")
 	} else {
-		fmt.Println("Conexión existosa con GORM")
-		return db
+		fmt.Println("Conectando a producción (Render)...")
 	}
-}()
+
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic("Error al conectar a la base de datos: " + err.Error())
+	}
+
+	BaseDeDatos = db
+	fmt.Println("Conexión exitosa con GORM")
+}

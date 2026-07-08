@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 
+	"srvr/db"
 	"srvr/dominios"
 	"srvr/rutas"
 	"srvr/token"
@@ -65,17 +66,18 @@ func middleware(next http.Handler) http.Handler {
 	})
 }
 
-// init corre antes de main: ejecuta migraciones
-func init() {
+func main() {
+	// 1. Inicializar conexión a la base de datos
+	db.InitDB()
+
+	// 2. Ejecutar migraciones
 	dominios.MigrarPersona()
 	dominios.MigrarAnimal()
 	dominios.MigrarCategoria()
 	dominios.MigrarProducto()
 	dominios.MigrarFactura() // incluye factura_detalle
 	dominios.MigrarVenta()
-}
 
-func main() {
 	router := mux.NewRouter()
 
 	// Endpoints de autenticación
