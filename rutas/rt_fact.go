@@ -10,7 +10,6 @@ import (
 // Rutas_factura registra todos los endpoints relacionados con facturas
 func Rutas_factura(mx *mux.Router) {
 
-
 	// Rutas para administrador
 	mx.HandleFunc("/api/factura", token.VerificaAdmin(seguridad.ListarFacturas)).Methods("GET")
 	mx.HandleFunc("/api/factura/{id:[0-9]+}", token.VerificaAdmin(seguridad.ObtenerFactura)).Methods("GET")
@@ -33,5 +32,3 @@ func Rutas_factura(mx *mux.Router) {
 		token.TokenMiddleware(seguridad.CrearFacturaConDetalle)).
 		Methods("POST")
 }
-
-

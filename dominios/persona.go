@@ -19,7 +19,6 @@ type Persona struct {
 	Telefono    string    `json:"telefono" gorm:"column:prsntelf"`
 	Sexo        string    `json:"sexo" gorm:"column:prsnsexo"`
 	Direccion   string    `json:"direccion" gorm:"column:prsndire"`
-	
 }
 
 type Personas []Persona
