@@ -37,7 +37,7 @@ func VerificaAdmin(next http.HandlerFunc) http.HandlerFunc {
 		username := fmt.Sprintf("%v", claims["Username"])
 		fmt.Println("🔐 VerificaAdmin - Usuario autenticado:", username)
 
-		if username != "admin1" {
+		if username != "admin" {
 			http.Error(w, `{"error":"No autorizado (solo admin)", "ok":false}`, http.StatusForbidden)
 			return
 		}
