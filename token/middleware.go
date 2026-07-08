@@ -11,7 +11,7 @@ import (
 // SecretKey debe estar definida en tu configuración principal
 // Ejemplo: var SecretKey = []byte(os.Getenv("clave-secreta"))
 
-// VerificaAdmin permite acceso solo al usuario admin1
+// VerificaAdmin permite acceso solo al usuario admin
 func VerificaAdmin(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")

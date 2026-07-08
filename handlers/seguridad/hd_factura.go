@@ -283,7 +283,7 @@ func VerFacturasPorUsuario(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var personaIDFinal int64
-	if username == "admin1" && paramID != "" {
+	if username == "admin" && paramID != "" {
 		personaIDFinal, err = strconv.ParseInt(paramID, 10, 64)
 		if err != nil || personaIDFinal == 0 {
 			http.Error(w, `{"ok":false,"msg":"persona_id inválido"}`, http.StatusBadRequest)
