@@ -7,23 +7,24 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Endpoints para reportes (solo admin, protegidos)
+// RegistrarRutasReportes define los endpoints protegidos para administración
 func RegistrarRutasReportes(r *mux.Router) {
+	// Reportes de productos y clientes
 	r.HandleFunc("/api/reportes/top-productos", token.VerificaAdmin(seguridad.TopProductos)).Methods("GET")
-
 	r.HandleFunc("/api/reportes/top-clientes", token.VerificaAdmin(seguridad.TopClientes)).Methods("GET")
 	r.HandleFunc("/api/reportes/stock-disponible", token.VerificaAdmin(seguridad.StockDisponible)).Methods("GET")
 	r.HandleFunc("/api/reportes/bajo-stock", seguridad.ProductosBajoStock).Methods("GET")
 
-	// Nuevos endpoints para reportes generales:
+	// Reportes financieros y métricas generales
 	r.HandleFunc("/api/reportes/valor-stock", token.VerificaAdmin(seguridad.ValorStock)).Methods("GET")
 	r.HandleFunc("/api/reportes/total-recaudado", token.VerificaAdmin(seguridad.TotalRecaudadoHandler)).Methods("GET")
 	r.HandleFunc("/api/reportes/total-vendido", token.VerificaAdmin(seguridad.TotalProductosVendidosHandler)).Methods("GET")
-	//  ventas por día de 2025
-	r.HandleFunc("/api/reportes/ventas-por-dia-2025", token.VerificaAdmin(seguridad.VentasPorDia2025)).Methods("GET")
+
+	// Corregido: Asegúrate de que en seguridad.go exista la función VentasPorDia2026
+	r.HandleFunc("/api/reportes/ventas-por-dia-2026", token.VerificaAdmin(seguridad.VentasPorDia2026)).Methods("GET")
 }
 
-// Endpoints públicos (acceso libre, para catálogo y web de usuario)
+// RegistrarRutasPublicas define endpoints de acceso libre
 func RegistrarRutasPublicas(r *mux.Router) {
 	r.HandleFunc("/api/catalogo/mas-vendidos", seguridad.TopProductos).Methods("GET")
 }

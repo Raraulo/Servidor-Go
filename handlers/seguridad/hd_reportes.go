@@ -19,6 +19,11 @@ type TopProducto struct {
 	TotalVendido int     `json:"total_vendido"`
 }
 
+type VentasPorDia struct {
+	Dia         string  `json:"dia"`
+	TotalVentas float64 `json:"total_ventas"`
+}
+
 func TopProductos(rw http.ResponseWriter, r *http.Request) {
 	rows, err := db.BaseDeDatos.Raw(`
   SELECT p.id, p.nombre, p.descripcion, p.precio, p.stock, p.imagen_url, p.animal_id, p.disponible, p.fecha_ingreso, SUM(fd.cantidad) AS total_vendido
@@ -60,27 +65,21 @@ func TopProductos(rw http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(rw).Encode(result)
 }
 
-// Estructura para ventas por día en 2025
-type VentasPorDia struct {
-	Dia         string  `json:"dia"`
-	TotalVentas float64 `json:"total_ventas"`
-}
-
-// Handler para ventas por día (solo 2025)
-func VentasPorDia2025(rw http.ResponseWriter, r *http.Request) {
+func VentasPorDia2026(rw http.ResponseWriter, r *http.Request) {
 	rows, err := db.BaseDeDatos.Raw(`
-		SELECT 
-			fecha::date AS dia,
-			SUM(total) AS total_ventas
-		FROM 
-			factura
-		WHERE 
-			EXTRACT(YEAR FROM fecha) = 2025
-		GROUP BY 
-			dia
-		ORDER BY 
-			dia;
-	`).Rows()
+        SELECT 
+            fecha::date AS dia,
+            SUM(total) AS total_ventas
+        FROM 
+            factura
+        WHERE 
+            EXTRACT(YEAR FROM fecha) = 2026
+        GROUP BY 
+            dia
+        ORDER BY 
+            dia;
+    `).Rows()
+
 	if err != nil {
 		http.Error(rw, err.Error(), http.StatusInternalServerError)
 		return
@@ -96,6 +95,12 @@ func VentasPorDia2025(rw http.ResponseWriter, r *http.Request) {
 		}
 		result = append(result, v)
 	}
+
+	// Si no hay ventas, enviamos un array vacío en lugar de null
+	if result == nil {
+		result = []VentasPorDia{}
+	}
+
 	rw.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(rw).Encode(result)
 }
